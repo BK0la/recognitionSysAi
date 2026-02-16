@@ -1,0 +1,82 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 76
+names:
+  0: bicycle
+  1: bus_stop
+  2: children
+  3: crosswalk
+  4: do_not_enter
+  5: do_not_turn_left
+  6: do_not_turn_right
+  7: do_not_u_turn
+  8: give_way
+  9: left_lane_enter
+  10: left_right_lane
+  11: left_sharp_curve
+  12: left_turn
+  13: light_green
+  14: light_red
+  15: light_traffic
+  16: light_yellow
+  17: no_overtaking
+  18: no_overtaking_truck
+  19: no_parking
+  20: no_passing
+  21: no_stop
+  22: no_waiting
+  23: parking
+  24: railway_crossing
+  25: refueling
+  26: right_sharp_curve
+  27: right_turn
+  28: Priority road
+  29: road_rough
+  30: road_slippery
+  31: road_work
+  32: rough_road
+  33: round_about
+  34: snow_warning
+  35: speed_limit_100
+  36: speed_limit_120
+  37: speed_limit_20
+  38: speed_limit_30
+  39: speed_limit_40
+  40: speed_limit_50
+  41: speed_limit_60
+  42: speed_limit_70
+  43: speed_limit_80
+  44: stop
+  45: t_intersection_l
+  46: truck
+  47: u_turn
+  48: warning
+  49: axle_load_limit
+  50: barrier_ahead
+  51: cattle
+  52: compulsory_ahead
+  53: compulsory_ahead_or_left
+  54: compulsory_ahead_or_right
+  55: compulsory_cycle_track
+  56: compulsory_keep_left
+  57: compulsory_keep_right
+  58: compulsory_min_speed
+  59: compulsory_sound_horn
+  60: cross_road
+  61: cycle_crossing
+  62: cycle_prohibited
+  63: dangerous_dip
+  64: direction
+  65: falling_rocks
+  66: ferry
+  67: gap_in_median
+  68: height_limit
+  69: horn_prohibited
+  70: length_limit
+  71: load_limit
+  72: narrow_bridge
+  73: narrow_road
+  74: pass_either_side
+  75: width_limit
