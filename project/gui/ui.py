@@ -12,7 +12,6 @@ ACCENT = "#3A86FF"
 ACCENT_HOVER = "#265DCC"
 TEXT = "#FFFFFF"
 
-
 def _set_windows_taskbar_icon(root: ctk.CTk, ico_path: str, png_fallback_path: str | None = None):
     if sys.platform.startswith("win"):
         try:
@@ -105,7 +104,7 @@ class App(ctk.CTk):
         self.lang_menu.pack(pady=(0, 10), padx=8, fill="x")
         self.lang_menu.set(LANG_EN)
 
-        # ✅ Preprocess ON/OFF Switch
+        # Preprocess ON/OFF Switch
         self.preprocess_switch = ctk.CTkSwitch(
             left,
             text="Preprocess: ON",
@@ -115,9 +114,7 @@ class App(ctk.CTk):
             text_color=TEXT
         )
         self.preprocess_switch.pack(pady=(0, 10), padx=8, fill="x")
-        self.preprocess_switch.select()  # default ON
-
-        # sync controller state
+        self.preprocess_switch.select() 
         self.controller.set_preprocess(True)
 
         self.btn_choose_image = make_btn(left, "", self.controller.open_image)
@@ -223,7 +220,7 @@ class App(ctk.CTk):
         self.stats_conf = ctk.CTkLabel(stats_frame, text="", text_color=TEXT, font=("Arial", 14, "bold"))
         self.stats_conf.grid(row=0, column=3, sticky="w", padx=(0, 20))
 
-        # BOTTOM RIGHT LOG
+        # BOTTOM RIGHT
         self.lbl_log = ctk.CTkLabel(bottom_right, text="", font=("Arial", 16, "bold"), text_color=TEXT)
         self.lbl_log.pack(anchor="w", pady=(0, 6))
 
@@ -233,7 +230,8 @@ class App(ctk.CTk):
 
         self.apply_language(LANG_EN)
 
-    # ✅ Switch callback
+    #Switch callback
+    
     def _on_preprocess_toggle(self):
         enabled = bool(self.preprocess_switch.get())
         self.preprocess_switch.configure(text=f"Preprocess: {'ON' if enabled else 'OFF'}")

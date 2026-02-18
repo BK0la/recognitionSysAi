@@ -69,7 +69,6 @@ UI = {
     },
 }
 
-# Emoji for classes
 EMOJI = {
     "bicycle": "🚲",
     "bus_stop": "🚌",
@@ -140,7 +139,6 @@ EMOJI = {
     "width_limit": "↔️",
 }
 
-# Human names EN (non speed_limit_*)
 CLASS_EN = {
     "bicycle": "Bicycle",
     "bus_stop": "Bus Stop",
@@ -283,7 +281,6 @@ CLASS_UK = {
 
 _SPEED_RE = re.compile(r"^speed_limit_(\d+)$")
 
-
 def emoji_for(raw: str) -> str:
     if _SPEED_RE.match(raw):
         return "🚫💨"
@@ -301,7 +298,6 @@ def human_class_name(raw: str, lang: str) -> str:
     if lang == LANG_UK:
         return CLASS_UK.get(raw, raw)
     return CLASS_EN.get(raw, raw)
-
 
 def pretty_class(raw: str, lang: str) -> str:
     return f"{emoji_for(raw)} {human_class_name(raw, lang)}"

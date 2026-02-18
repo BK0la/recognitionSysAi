@@ -13,12 +13,8 @@ class gui_functions:
         self.model = model
         self.ui = ui
         self.after_id = None
-
-        # language
         self.lang = LANG_EN
         self.last_raw_classes = []
-
-        # video
         self.cap = None
         self.is_playing = False
         self.base_delay_ms = 30
@@ -26,33 +22,22 @@ class gui_functions:
         self.total_frames = 0
         self.fps = 30
         self.slider_block = False
-
-        # images
-        self.original_img = None      # PIL (RGB) for display
-        self.annotated_img = None     # PIL (RGB) for display
+        self.original_img = None 
+        self.annotated_img = None 
         self.show_detection = True
-
-        # OpenCV preprocessing
         self.preprocess_enabled = True
-        self.preprocess_mode = "clahe"   # "clahe" or "none"
-
-        # remember last image for instant rerun ✅
+        self.preprocess_mode = "clahe" 
         self.last_image_path = None
         self.last_image_bgr = None
-
-        # folder navigation
         self.folder_path = None
         self.image_paths = []
         self.image_index = -1
-
-        # batch
         self.save_dir = None
 
         self.log("App started")
 
-    # --------------------------
     # LANGUAGE
-    # --------------------------
+
     def set_language(self, lang: str):
         if lang not in (LANG_EN, LANG_UK):
             lang = LANG_EN
@@ -64,9 +49,8 @@ class gui_functions:
     def _S(self, key: str) -> str:
         return UI.get(self.lang, UI[LANG_EN]).get(key, UI[LANG_EN].get(key, key))
 
-    # --------------------------
     # MINI LOG
-    # --------------------------
+
     def log(self, msg: str):
         if not hasattr(self.ui, "log_box"):
             return
@@ -79,17 +63,12 @@ class gui_functions:
         except Exception:
             pass
 
-    # ==========================
     # OpenCV PREPROCESS
-    # ==========================
+
     def preprocess_bgr(self, frame_bgr):
         if not self.preprocess_enabled or self.preprocess_mode == "none":
             return frame_bgr
-
-        # 1) мягкое шумоподавление
         den = cv2.fastNlMeansDenoisingColored(frame_bgr, None, 3, 3, 7, 21)
-
-        # 2) CLAHE по яркости (LAB)
         lab = cv2.cvtColor(den, cv2.COLOR_BGR2LAB)
         l, a, b = cv2.split(lab)
         clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
@@ -102,9 +81,8 @@ class gui_functions:
         frame_rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
         return Image.fromarray(frame_rgb)
 
-    # ==========================
-    # PREPROCESS SWITCH ✅
-    # ==========================
+    # PREPROCESS SWITCH
+
     def set_preprocess(self, enabled: bool):
         self.preprocess_enabled = bool(enabled)
         state = "ON" if self.preprocess_enabled else "OFF"
@@ -114,18 +92,14 @@ class gui_functions:
             self.ui.drop_hint.configure(
                 text="Preprocess: ON (CLAHE)" if self.preprocess_enabled else "Preprocess: OFF"
             )
-
-        # ✅ мгновенно пересчитать текущую картинку, если она открыта
-        # видео не трогаем: там со следующего кадра будет эффект
         if (not self.is_playing) and (self.last_image_bgr is not None):
             try:
                 self._run_detection_on_bgr(self.last_image_bgr)
             except Exception as e:
                 self.log(f"Preprocess rerun error: {e}")
 
-    # ==========================
     # IMAGE
-    # ==========================
+
     def open_image(self):
         path = filedialog.askopenfilename(filetypes=[("Images", "*.jpg *.png *.jpeg *.bmp *.webp")])
         if not path:
@@ -171,18 +145,13 @@ class gui_functions:
         frame_bgr = cv2.imread(path)
         if frame_bgr is None:
             raise RuntimeError("cv2.imread failed (unsupported file or path)")
-
-        # ✅ запомнить для мгновенного переключения
         self.last_image_bgr = frame_bgr.copy()
         self.last_image_path = path
 
         self._run_detection_on_bgr(frame_bgr)
 
     def _run_detection_on_bgr(self, frame_bgr):
-        # original
         self.original_img = self._bgr_to_pil_rgb(frame_bgr)
-
-        # preprocess for inference
         frame_infer = self.preprocess_bgr(frame_bgr)
 
         t0 = time.perf_counter()
@@ -268,8 +237,6 @@ class gui_functions:
         self.original_img = None
         self.annotated_img = None
         self.last_raw_classes = []
-
-        # ✅ сброс сохранённой картинки
         self.last_image_path = None
         self.last_image_bgr = None
 
@@ -298,9 +265,8 @@ class gui_functions:
 
         self.log("Cleared image")
 
-    # ==========================
     # FOLDER NAVIGATION
-    # ==========================
+
     def open_folder(self):
         folder = filedialog.askdirectory()
         if not folder:
@@ -341,9 +307,8 @@ class gui_functions:
         self.log(f"Prev ({self.image_index+1}/{len(self.image_paths)}): {os.path.basename(self.image_paths[self.image_index])}")
         self._run_detection_on_image(self.image_paths[self.image_index])
 
-    # ==========================
     # BATCH
-    # ==========================
+
     def batch_process_folder(self):
         if not self.image_paths:
             self.open_folder()
@@ -388,9 +353,8 @@ class gui_functions:
         if hasattr(self.ui, "result_text"):
             self.ui.result_text.configure(text="All detected images already saved during batch processing.")
 
-    # ==========================
     # VIDEO
-    # ==========================
+
     def open_video(self):
         path = filedialog.askopenfilename(filetypes=[("Video files", "*.mp4 *.avi *.mov *.mkv")])
         if not path:
