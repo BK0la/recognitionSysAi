@@ -1,0 +1,5 @@
+*.pyc
+project/gui/__pycache__/functiongui.cpython-311.pyc
+project/gui/__pycache__/localization.cpython-311.pyc
+project/gui/__pycache__/ui.cpython-311.pyc
+project/mainprogram/__pycache__/modelload.cpython-311.pyc
